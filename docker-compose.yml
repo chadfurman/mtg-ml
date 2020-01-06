@@ -12,6 +12,8 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    networks:
+      - db
 
   # database migrations and seed data
   db-util:
@@ -25,5 +27,13 @@ services:
       - /opt/app/node_modules
     environment:
       DB_CONNECTION_STRING: "postgres://mtg:mtg_pass@db:5432/mtg_local?charset=utf8"
+    networks:
+      - db
 volumes:
   postgres-data:
+networks:
+  db:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.57.0/24
